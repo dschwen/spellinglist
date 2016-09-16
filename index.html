@@ -1,0 +1,100 @@
+<html>
+<head>
+  <style>
+    input, button { font-size: 30pt; margin-top: 50pt; }
+    div { text-align: center; }
+  </style>
+</head>
+<body>
+  <div>
+    <input id="word" type="text"/>
+    <button onclick="check()" id="check">Check</button>
+    <button onclick="sayWord()" id="say">Say Again</button>
+  </div>
+
+  <script>
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+    // input box
+    var word = document.getElementById("word");
+    // check button
+    var button = document.getElementById("check");
+
+    function say(text)
+    {
+      var msg = new SpeechSynthesisUtterance(text);
+      msg.lang = 'en-US';
+      window.speechSynthesis.speak(msg);
+    }
+
+    function sayWord()
+    {
+      if (todo.length > 0) {
+        say(todo[0]);
+      }
+      word.focus();
+    }
+
+    function check()
+    {
+      var guess = word.value;
+      word.value = '';
+      word.focus();
+
+      if (todo.length > 0)
+      {
+        if (guess === todo[0])
+        {
+          todo.splice(0,1)
+          sayWord();
+        }
+        else
+        {
+          say('Sorry, that was not quite right. Please try again!');
+          // append the wrong word
+          // todo.push(todo.splice(0,1)[0])
+        }
+      }
+
+      if (todo.length == 0)
+      {
+        button.disabled = true;
+        say("Congratulations, you are done for today!");
+      }
+    }
+
+    word.addEventListener("keydown", function (e) {
+      if (e.keyCode === 13) {
+        check();
+      }
+    });
+
+    // vocabulary list
+    //var list = ['gym', 'frog', 'giant', 'twig', 'germ', 'flag', 'gem', 'gone', 'orange', 'golf', 'gulp', 'gust'];
+    var list = ['strange', 'shrink', 'square', 'scrape', 'string', 'shrimp', 'squint', 'scratch', 'strong', 'shrunk', 'squeeze', 'screen', 'strict', 'shrug', 'squirt', 'scrap', 'squash'];
+
+    // shuffle the list
+    var todo = shuffle(list);
+
+    // say the first word
+    sayWord();
+  </script>
+</body>
+</html>
