@@ -1,15 +1,36 @@
 <html>
 <head>
   <style>
-    input, button { font-size: 30pt; margin-top: 50pt; }
-    div { text-align: center; }
+    body { margin: 0; }
+    input, button { font-size: 30pt; }
+    .container {
+      position: absolute;
+      text-align: center;
+      border: 0; padding: 0; margin: 0;
+      width: 100%;
+    }
+    #progressbox {
+      border: 1px solid gray;
+      height: 10pt;
+      width: 50%;
+      margin-bottom: 5pt;
+      display: inline-block;
+    }
+    #progressbar {
+      background-color: #7777ff;
+      width: 100%;
+      height: 100%;
+    }
   </style>
 </head>
 <body>
-  <div>
+  <div class="container" style="top: 50%">
     <input id="word" type="text"/>
     <button onclick="check()" id="check">Check</button>
     <button onclick="sayWord()" id="say">Say Again</button>
+  </div>
+  <div class="container" style="bottom: 50%">
+    <div id="progressbox"><div id="progressbar"></div></div>
   </div>
 
   <script>
@@ -36,6 +57,8 @@
     var word = document.getElementById("word");
     // check button
     var button = document.getElementById("check");
+    // progress bar
+    var bar = document.getElementById("progressbar");
 
     function say(text)
     {
@@ -63,6 +86,7 @@
         if (guess === todo[0])
         {
           todo.splice(0,1)
+          bar.style.width = (100.0 * todo.length / list.length) + '%';
           sayWord();
         }
         else
@@ -91,7 +115,8 @@
     var list = ['strange', 'shrink', 'square', 'scrape', 'string', 'shrimp', 'squint', 'scratch', 'strong', 'shrunk', 'squeeze', 'screen', 'strict', 'shrug', 'squirt', 'scrap', 'squash'];
 
     // shuffle the list
-    var todo = shuffle(list);
+    var todo = list.slice();
+    shuffle(todo);
 
     // say the first word
     sayWord();
