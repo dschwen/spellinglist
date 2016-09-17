@@ -75,13 +75,40 @@
       word.focus();
     }
 
+    function analyze(guess, target)
+    {
+      // check if a letter was added
+      if (target.length + 1 == guess.length)
+        for (var i = 0; i < guess.length; ++i)
+          if ((guess.substr(0,i) + guess.substr(i+1)) === target)
+            return 'You have an extra letter in there!';
+
+      // check if a letter was left out
+      if (guess.length + 1 == target.length)
+        for (var i = 0; i < target.length; ++i)
+          if ((target.substr(0,i) + target.substr(i+1)) === guess)
+            return 'You left out a letter!';
+
+      // count the different letters
+      var diff = 0;
+      if (target.length == guess.length)
+        for (var i = 0; i < guess.length; ++i)
+          if (guess[i] != target[i])
+            diff++;
+      if (diff == 1)
+        return 'One of your letters is wrong!';
+
+      return 'Sorry, that was not quite right. Please try again!';
+    }
+
+
     function check()
     {
       var guess = word.value;
       word.value = '';
       word.focus();
 
-      if (todo.length > 0)
+      if (todo.length > 0 && guess !== '')
       {
         if (guess === todo[0])
         {
@@ -91,7 +118,9 @@
         }
         else
         {
-          say('Sorry, that was not quite right. Please try again!');
+          // generate a specific error message
+          say(analyze(guess, todo[0]));
+
           // append the wrong word
           // todo.push(todo.splice(0,1)[0])
         }
