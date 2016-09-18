@@ -60,17 +60,18 @@
     // progress bar
     var bar = document.getElementById("progressbar");
 
-    function say(text)
+    function say(text, rate)
     {
       var msg = new SpeechSynthesisUtterance(text);
       msg.lang = 'en-US';
+      msg.rate = rate || 1.0;
       window.speechSynthesis.speak(msg);
     }
 
     function sayWord()
     {
       if (todo.length > 0) {
-        say(todo[0]);
+        say(todo[0], 0.75);
       }
       word.focus();
     }
