@@ -1,3 +1,5 @@
+// http://mherman.org/blog/2015/01/31/local-authentication-with-passport-and-express-4/#.V-Cym3UrIbw
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
